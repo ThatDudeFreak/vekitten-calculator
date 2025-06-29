@@ -6,243 +6,243 @@ const VeKittenCalculator = () => {
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [lastDataUpdate] = useState(new Date('2025-06-29T13:28:00-05:00')); // Last manual data update from user (EST)
+  const [lastDataUpdate] = useState(new Date('2025-06-29T19:35:00-05:00')); // Last manual data update from user (EST)
 
   // Real pool data from KittenSwap voting interface - UPDATED
   const [pools, setPools] = useState([
     {
       id: 'hype-usdt0',
       name: 'HYPE/USD₮0',
-      poolSize: 39820000,
-      incentives: 485131.76
+      poolSize: 40320000,
+      incentives: 483121.70
     },
     {
       id: 'hype-ubtc',
       name: 'HYPE/UBTC',
-      poolSize: 11090000,
-      incentives: 145008.79
+      poolSize: 11200000,
+      incentives: 144438.02
     },
     {
       id: 'hype-usdhl',
       name: 'HYPE/USDHL',
-      poolSize: 12110000,
-      incentives: 88644.96
+      poolSize: 12120000,
+      incentives: 88299.60
     },
     {
       id: 'hype-ueth',
       name: 'HYPE/UETH',
-      poolSize: 5270000,
-      incentives: 86569.87
+      poolSize: 5290000,
+      incentives: 86170.38
     },
     {
       id: 'hype-purr',
       name: 'HYPE/PURR',
-      poolSize: 2770000,
-      incentives: 61776.81
+      poolSize: 2780000,
+      incentives: 61398.78
     },
     {
       id: 'feusd-hype',
       name: 'feUSD/HYPE',
-      poolSize: 828420,
-      incentives: 59462.94
+      poolSize: 843060,
+      incentives: 59128.20
     },
     {
       id: 'hype-usdxl',
       name: 'HYPE/USDXL',
-      poolSize: 2190000,
-      incentives: 58414.63
+      poolSize: 2280000,
+      incentives: 58157.35
     },
     {
       id: 'hype-usde',
       name: 'HYPE/USDe',
-      poolSize: 580610,
-      incentives: 43858.21
+      poolSize: 582060,
+      incentives: 43682.64
     },
     {
       id: 'liqd-hype',
       name: 'LIQD/HYPE',
-      poolSize: 1680000,
-      incentives: 35992.01
+      poolSize: 1710000,
+      incentives: 35853.81
     },
     {
       id: 'usol-hype',
       name: 'USOL/HYPE',
-      poolSize: 381900,
-      incentives: 30109.88
+      poolSize: 402200,
+      incentives: 30084.22
     },
     {
       id: 'hype-kei',
       name: 'HYPE/KEI',
-      poolSize: 368850,
-      incentives: 28042.70
+      poolSize: 370840,
+      incentives: 27804.46
     },
     {
       id: 'lhype-usdxl',
       name: 'LHYPE/USDXL',
-      poolSize: 289320,
-      incentives: 24449.99
+      poolSize: 289840,
+      incentives: 24316.05
     },
     {
       id: 'usdt0-ueth',
       name: 'USD₮0/UETH',
       poolSize: 569670,
-      incentives: 21830.45
+      incentives: 21829.40
     },
     {
       id: 'ubtc-ueth',
       name: 'UBTC/UETH',
-      poolSize: 255620,
-      incentives: 18466.20
+      poolSize: 317580,
+      incentives: 18463.29
     },
     {
       id: 'ubtc-usdt0',
       name: 'UBTC/USD₮0',
-      poolSize: 287210,
-      incentives: 15607.03
+      poolSize: 684350,
+      incentives: 15622.02
     },
     {
       id: 'hype-lhype',
       name: 'HYPE/LHYPE',
-      poolSize: 2510000,
-      incentives: 9564.86
+      poolSize: 2560000,
+      incentives: 9480.36
     },
     {
       id: 'ufart-hype',
       name: 'UFART/HYPE',
-      poolSize: 364700,
-      incentives: 9338.21
+      poolSize: 365150,
+      incentives: 9224.74
     },
     {
       id: 'hype-hfun',
       name: 'HYPE/HFUN',
-      poolSize: 125760,
-      incentives: 9154.07
+      poolSize: 151030,
+      incentives: 9092.50
     },
     {
       id: 'usde-usdt0',
       name: 'USDe/USD₮0',
-      poolSize: 137320,
-      incentives: 7794.95
+      poolSize: 137930,
+      incentives: 7803.14
     },
     {
       id: 'usdhl-usdt0',
       name: 'USDHL/USD₮0',
-      poolSize: 858640,
-      incentives: 7323.10
+      poolSize: 860980,
+      incentives: 7322.62
     },
     {
       id: 'buddy-hype',
       name: 'BUDDY/HYPE',
       poolSize: 188310,
-      incentives: 6800.46
+      incentives: 6699.63
     },
     {
       id: 'usde-ueth',
       name: 'USDe/UETH',
       poolSize: 226810,
-      incentives: 6565.37
+      incentives: 6568.32
     },
     {
       id: 'hype-wsthype',
       name: 'HYPE/wstHYPE',
-      poolSize: 123480,
-      incentives: 5958.43
+      poolSize: 139890,
+      incentives: 5908.07
     },
     {
       id: 'usde-ubtc',
       name: 'USDe/UBTC',
-      poolSize: 61900,
-      incentives: 5780.81
+      poolSize: 615080,
+      incentives: 5786.61
     },
     {
-      id: 'hype-paws',
-      name: 'HYPE/PAWS',
-      poolSize: 6940000,
-      incentives: 5412.30
+      id: 'hype-xaut0',
+      name: 'HYPE/XAUt0',
+      poolSize: 253600,
+      incentives: 5276.32
     },
     {
       id: 'hype-kitten',
       name: 'HYPE/KITTEN',
       poolSize: 2160000,
-      incentives: 5369.84
+      incentives: 5322.64
     },
     {
-      id: 'hype-xaut0',
-      name: 'HYPE/XAUt0',
-      poolSize: 246250,
-      incentives: 5297.65
+      id: 'hype-paws',
+      name: 'HYPE/PAWS',
+      poolSize: 6950000,
+      incentives: 5228.87
     },
     {
       id: 'hype-mhype',
       name: 'HYPE/mHYPE',
-      poolSize: 560950,
-      incentives: 4755.41
+      poolSize: 561160,
+      incentives: 4738.03
     },
     {
       id: 'feusd-usdt0',
       name: 'feUSD/USD₮0',
       poolSize: 319860,
-      incentives: 4035.62
+      incentives: 4034.51
     },
     {
       id: 'usdt0-usdxl',
       name: 'USD₮0/USDXL',
       poolSize: 185310,
-      incentives: 3944.50
+      incentives: 3949.69
     },
     {
       id: 'kei-usdt0',
       name: 'KEI/USD₮0',
-      poolSize: 152650,
-      incentives: 2599.64
+      poolSize: 153800,
+      incentives: 2590.89
     },
     {
       id: 'feusd-usdxl',
       name: 'feUSD/USDXL',
-      poolSize: 51150,
-      incentives: 1749.21
+      poolSize: 51360,
+      incentives: 1748.04
     },
     {
       id: 'jeff-hype',
       name: 'JEFF/HYPE',
       poolSize: 22930,
-      incentives: 1645.09
-    },
-    {
-      id: 'kei-usdxl',
-      name: 'KEI/USDXL',
-      poolSize: 25910,
-      incentives: 1599.62
+      incentives: 1623.29
     },
     {
       id: 'feusd-usde',
       name: 'feUSD/USDe',
       poolSize: 346380,
-      incentives: 1596.67
+      incentives: 1597.05
+    },
+    {
+      id: 'kei-usdxl',
+      name: 'KEI/USDXL',
+      poolSize: 27060,
+      incentives: 1592.61
     },
     {
       id: 'loop-lhype',
       name: 'LOOP/LHYPE',
       poolSize: 93590,
-      incentives: 1090.15
+      incentives: 1080.22
     },
     {
       id: 'usr-usdt0',
       name: 'USR/USD₮0',
-      poolSize: 4480,
-      incentives: 260.77
+      poolSize: 9750,
+      incentives: 261.35
     },
     {
       id: 'dndx-hype',
       name: 'DNDX/HYPE',
       poolSize: 9560,
-      incentives: 134.56
+      incentives: 133.27
     },
     {
       id: 'whlp-usdhl',
       name: 'WHLP/USDHL',
       poolSize: 906800,
-      incentives: 7.37
+      incentives: 8.40
     },
     {
       id: 'usdt0-usdxl-std',
@@ -487,9 +487,9 @@ const VeKittenCalculator = () => {
               <thead className="bg-white/5">
                 <tr className="border-b border-white/20">
                   <th className="text-left py-4 px-6 text-green-400 font-semibold">Pool</th>
-                  <th className="text-right py-4 px-4 text-green-400 font-semibold">Pool Size</th>
+                  <th className="text-right py-4 px-4 text-green-400 font-semibold">Total Votes</th>
                   <th className="text-center py-4 px-4 text-green-400 font-semibold">My Votes</th>
-                  <th className="text-right py-4 px-4 text-green-400 font-semibold">New Size</th>
+                  <th className="text-right py-4 px-4 text-green-400 font-semibold">New Total Votes</th>
                   <th className="text-right py-4 px-4 text-green-400 font-semibold">% of Votes</th>
                   <th className="text-right py-4 px-4 text-green-400 font-semibold">Pool Incentives</th>
                   <th className="text-right py-4 px-6 text-green-400 font-semibold">My Incentive</th>
