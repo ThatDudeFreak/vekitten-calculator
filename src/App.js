@@ -433,24 +433,63 @@ const VeKittenCalculator = () => {
           </div>
           <p className="text-green-200 text-base md:text-lg px-4 mb-4">Allocate your votes across pools to maximize incentives</p>
           
-          {/* Buy veKITTEN Button */}
-          <div className="flex justify-center mb-4">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mb-4">
             <a 
               href="https://www.hyperwarp.fi/mx/kitten" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 backdrop-blur-lg border border-green-500/40 text-green-300 hover:text-green-200 px-4 md:px-6 py-3 rounded-xl transition-all duration-200 group"
             >
-              <svg className="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Warp Logo SVG */}
-                <circle cx="50" cy="50" r="48" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2"/>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="2" strokeOpacity="0.7"/>
-                <circle cx="50" cy="50" r="22" fill="none" stroke="currentColor" strokeWidth="2" strokeOpacity="0.5"/>
-                <circle cx="50" cy="50" r="10" fill="currentColor" fillOpacity="0.8"/>
-              </svg>
+              <div className="w-6 h-6 md:w-8 md:h-8 relative">
+                {/* Ancient Observatory/Astronomical Theme */}
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  {/* Base structure */}
+                  <rect x="20" y="60" width="60" height="30" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="1.5"/>
+                  {/* Pillar */}
+                  <rect x="35" y="40" width="30" height="25" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+                  {/* Telescope/Instrument */}
+                  <line x1="30" y1="45" x2="70" y2="25" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="70" cy="25" r="3" fill="currentColor"/>
+                  {/* Stars/Celestial objects */}
+                  <circle cx="80" cy="15" r="1.5" fill="currentColor"/>
+                  <circle cx="25" cy="20" r="1" fill="currentColor"/>
+                  <circle cx="85" cy="35" r="1" fill="currentColor"/>
+                  {/* Moon/Planet */}
+                  <circle cx="75" cy="15" r="4" fill="none" stroke="currentColor" strokeWidth="1"/>
+                </svg>
+              </div>
               <div className="flex flex-col items-start">
                 <span className="font-semibold text-sm md:text-base">Buy more veKITTEN here</span>
                 <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">Hyperwarp Exchange</span>
+              </div>
+              <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+            </a>
+            
+            <a 
+              href="https://app.kittenswap.finance/vekitten" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 backdrop-blur-lg border border-purple-500/40 text-purple-300 hover:text-purple-200 px-4 md:px-6 py-3 rounded-xl transition-all duration-200 group"
+            >
+              <div className="w-6 h-6 md:w-8 md:h-8">
+                {/* Voting/Ballot Box Icon */}
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  {/* Ballot Box */}
+                  <rect x="20" y="40" width="60" height="40" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2" rx="4"/>
+                  {/* Slot */}
+                  <rect x="30" y="35" width="40" height="3" fill="currentColor" fillOpacity="0.3"/>
+                  {/* Ballot being inserted */}
+                  <rect x="35" y="20" width="30" height="20" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="1.5" rx="2"/>
+                  {/* Check mark on ballot */}
+                  <path d="M42 28 L46 32 L54 24" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Base */}
+                  <rect x="15" y="75" width="70" height="5" fill="currentColor" fillOpacity="0.2"/>
+                </svg>
+              </div>
+              <div className="flex flex-col items-start">
+                <span className="font-semibold text-sm md:text-base">Vote with veKITTEN Here</span>
+                <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">KittenSwap Voting</span>
               </div>
               <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
             </a>
@@ -490,9 +529,7 @@ const VeKittenCalculator = () => {
           {/* Estimation Warning */}
           <div className="p-4 border-b border-green-600/30">
             <div className="flex items-center gap-3">
-          
               <div>
-                
                 <div className="border border-red-500/50 rounded p-2 bg-red-500/10">
                   <p className="text-yellow-200 text-sm">
                     ⚠️ <strong>Estimates Only:</strong> These calculations are based on current data and can change significantly until the end of the epoch as more votes are cast.
