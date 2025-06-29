@@ -6,7 +6,7 @@ const VeKittenCalculator = () => {
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const lastDataUpdate = 'Jun 29, 2025 4:00 PM EST'; // Static date - update manually
+  const lastDataUpdate = 'Jun 29, 2025 7:35 PM EST'; // Static date - update manually
 
   // Real pool data from KittenSwap voting interface - UPDATED
   const [pools, setPools] = useState([
@@ -392,19 +392,19 @@ const VeKittenCalculator = () => {
   const totalIncentives = calculatedPools.reduce((sum, pool) => sum + pool.myIncentive, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-teal-900 to-blue-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-green-900 via-teal-900 to-blue-900 p-3 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Calculator className="w-8 h-8 text-green-400" />
-            <h1 className="text-4xl font-bold text-white">veKITTEN Vote Allocation Calculator</h1>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3 mb-4">
+            <Calculator className="w-6 h-6 md:w-8 md:h-8 text-green-400" />
+            <h1 className="text-2xl md:text-4xl font-bold text-white text-center">veKITTEN Vote Allocation Calculator</h1>
           </div>
-          <p className="text-green-200 text-lg">Allocate your votes across pools to maximize incentives</p>
+          <p className="text-green-200 text-base md:text-lg px-4">Allocate your votes across pools to maximize incentives</p>
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
           <div className="bg-blue-500/20 backdrop-blur-lg rounded-xl p-4 border border-blue-500/30">
             <div className="text-center">
               <div className="text-sm text-blue-300 font-semibold mb-1">% of Votes Cast</div>
@@ -449,52 +449,52 @@ const VeKittenCalculator = () => {
           </div>
           
           {/* Controls */}
-          <div className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-4">
-                  <label className="text-white font-semibold text-lg">Total veKITTEN:</label>
+          <div className="p-4 md:p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                  <label className="text-white font-semibold text-base md:text-lg whitespace-nowrap">Total veKITTEN:</label>
                   <input
                     type="number"
                     value={mySize}
                     onChange={(e) => setMySize(e.target.value)}
-                    className="bg-green-700/30 border border-green-500/50 rounded-lg px-4 py-2 text-white text-xl font-bold w-48 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    className="bg-green-700/30 border border-green-500/50 rounded-lg px-3 md:px-4 py-2 md:py-2 text-white text-lg md:text-xl font-bold w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-green-400"
                     placeholder="950000"
                   />
                 </div>
-                <div className="text-white">
-                  <div className="text-sm text-green-300">Allocated: {allocatedVotes.toLocaleString()}</div>
-                  <div className={`text-sm font-bold ${remainingVotes < 0 ? 'text-red-400' : 'text-green-400'}`}>
+                <div className="text-white text-sm md:text-base">
+                  <div className="text-green-300">Allocated: {allocatedVotes.toLocaleString()}</div>
+                  <div className={`font-bold ${remainingVotes < 0 ? 'text-red-400' : 'text-green-400'}`}>
                     Remaining: {remainingVotes.toLocaleString()}
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 md:gap-3">
                 <button
                   onClick={clearAllocations}
-                  className="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-colors"
+                  className="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-3 md:px-4 py-2 rounded-lg transition-colors text-sm md:text-base"
                 >
                   Clear All
                 </button>
                 <button
                   onClick={allocateTopThree}
-                  className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 px-4 py-2 rounded-lg transition-colors"
+                  className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 px-3 md:px-4 py-2 rounded-lg transition-colors text-sm md:text-base"
                 >
                   Split Top 3
                 </button>
                 <button
                   onClick={optimizeAllocation}
-                  className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 hover:from-yellow-500/30 hover:to-orange-500/30 text-yellow-400 px-4 py-2 rounded-lg transition-colors font-semibold border border-yellow-500/30"
+                  className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 hover:from-yellow-500/30 hover:to-orange-500/30 text-yellow-400 px-3 md:px-4 py-2 rounded-lg transition-colors font-semibold border border-yellow-500/30 text-sm md:text-base"
                 >
                   🚀 OPTIMIZE
                 </button>
                 <button
                   onClick={simulateDataRefresh}
                   disabled={loading}
-                  className="flex items-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-3 md:px-4 py-2 rounded-lg transition-colors disabled:opacity-50 text-sm md:text-base"
                 >
                   <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                  Refresh
+                  <span className="hidden sm:inline">Refresh</span>
                 </button>
               </div>
             </div>
@@ -503,18 +503,18 @@ const VeKittenCalculator = () => {
 
         {/* Summary */}
         {totalIncentives > 0 && (
-          <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-xl p-6 border border-green-500/30 mb-8">
-            <div className="flex items-center justify-between">
+          <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-green-500/30 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Total Weekly Incentives</h2>
-                <div className="text-4xl font-bold text-green-400">${totalIncentives.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                <div className="text-sm text-green-300 mt-2">
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Total Weekly Incentives</h2>
+                <div className="text-2xl md:text-4xl font-bold text-green-400">${totalIncentives.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                <div className="text-xs md:text-sm text-green-300 mt-2">
                   Data updated: {lastDataUpdate}
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-lg text-green-300">Monthly: ${(totalIncentives * 4.33).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
-                <div className="text-lg text-green-300">Yearly: ${(totalIncentives * 52).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+              <div className="text-left md:text-right">
+                <div className="text-base md:text-lg text-green-300">Monthly: ${(totalIncentives * 4.33).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+                <div className="text-base md:text-lg text-green-300">Yearly: ${(totalIncentives * 52).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
               </div>
             </div>
           </div>
@@ -523,17 +523,17 @@ const VeKittenCalculator = () => {
         {/* Pool Table */}
         <div className="bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[800px]">
               <thead className="bg-white/5">
                 <tr className="border-b border-white/20">
-                  <th className="text-left py-4 px-6 text-green-400 font-semibold">Pool</th>
-                  <th className="text-right py-4 px-4 text-green-400 font-semibold">Total Votes</th>
-                  <th className="text-center py-4 px-4 text-green-400 font-semibold">My Votes</th>
-                  <th className="text-right py-4 px-4 text-green-400 font-semibold">New Total Votes</th>
-                  <th className="text-right py-4 px-4 text-green-400 font-semibold">% of Votes</th>
-                  <th className="text-right py-4 px-4 text-green-400 font-semibold">Pool Incentives</th>
-                  <th className="text-right py-4 px-6 text-green-400 font-semibold">My Incentive</th>
-                  <th className="text-center py-4 px-4 text-green-400 font-semibold">Max</th>
+                  <th className="text-left py-3 md:py-4 px-3 md:px-6 text-green-400 font-semibold text-sm md:text-base">Pool</th>
+                  <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">Total Votes</th>
+                  <th className="text-center py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">My Votes</th>
+                  <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">New Total</th>
+                  <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">% Votes</th>
+                  <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">Incentives</th>
+                  <th className="text-right py-3 md:py-4 px-3 md:px-6 text-green-400 font-semibold text-sm md:text-base">My Incentive</th>
+                  <th className="text-center py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">Max</th>
                 </tr>
               </thead>
               <tbody>
@@ -541,45 +541,45 @@ const VeKittenCalculator = () => {
                   .sort((a, b) => (b.incentives / (b.poolSize + totalVotes)) - (a.incentives / (a.poolSize + totalVotes)))
                   .map((pool, index) => (
                   <tr key={pool.id} className={`border-b border-white/10 hover:bg-white/5 transition-colors ${pool.votesAllocated > 0 ? 'bg-green-500/10' : ''}`}>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        <span className="text-white font-semibold">{pool.name}</span>
-                        {index < 3 && <span className="text-xs bg-yellow-500/30 text-yellow-200 px-2 py-1 rounded">TOP ROI</span>}
+                    <td className="py-3 md:py-4 px-3 md:px-6">
+                      <div className="flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-2">
+                        <span className="text-white font-semibold text-sm md:text-base">{pool.name}</span>
+                        {index < 3 && <span className="text-xs bg-yellow-500/30 text-yellow-200 px-2 py-1 rounded w-fit">TOP ROI</span>}
                       </div>
                     </td>
-                    <td className="text-right py-4 px-4 text-white font-mono">
+                    <td className="text-right py-3 md:py-4 px-2 md:px-4 text-white font-mono text-sm md:text-base">
                       {pool.poolSize.toLocaleString('en-US', {minimumFractionDigits: 0})}
                     </td>
-                    <td className="text-center py-4 px-4">
+                    <td className="text-center py-3 md:py-4 px-2 md:px-4">
                       <input
                         type="number"
                         value={allocations[pool.id] || ''}
                         onChange={(e) => handleAllocationChange(pool.id, e.target.value)}
-                        className="bg-white/10 border border-white/30 rounded px-2 py-1 text-white text-center w-24 focus:outline-none focus:ring-1 focus:ring-green-500"
+                        className="bg-white/10 border border-white/30 rounded px-1 md:px-2 py-1 text-white text-center w-16 md:w-24 text-sm md:text-base focus:outline-none focus:ring-1 focus:ring-green-500"
                         placeholder="0"
                         min="0"
                         max={remainingVotes + (parseFloat(allocations[pool.id]) || 0)}
                       />
                     </td>
-                    <td className="text-right py-4 px-4 text-white font-mono">
+                    <td className="text-right py-3 md:py-4 px-2 md:px-4 text-white font-mono text-sm md:text-base">
                       {pool.newSize.toLocaleString('en-US', {minimumFractionDigits: 0})}
                     </td>
-                    <td className="text-right py-4 px-4 text-green-400 font-mono font-bold">
+                    <td className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-mono font-bold text-sm md:text-base">
                       {pool.percentOfVotes.toFixed(1)}%
                     </td>
-                    <td className="text-right py-4 px-4 text-white font-mono">
+                    <td className="text-right py-3 md:py-4 px-2 md:px-4 text-white font-mono text-sm md:text-base">
                       ${pool.incentives.toLocaleString('en-US', {minimumFractionDigits: 2})}
                     </td>
-                    <td className="text-right py-4 px-6 text-green-400 font-mono font-bold text-lg">
+                    <td className="text-right py-3 md:py-4 px-3 md:px-6 text-green-400 font-mono font-bold text-sm md:text-lg">
                       {pool.myIncentive > 0 ? pool.myIncentive.toLocaleString('en-US', {minimumFractionDigits: 2}) : '0.00'}
                     </td>
-                    <td className="text-center py-4 px-4">
+                    <td className="text-center py-3 md:py-4 px-2 md:px-4">
                       <button
                         onClick={() => concentrateInPool(pool.id)}
                         className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 px-2 py-1 rounded text-sm transition-colors"
                         title="Put all votes in this pool"
                       >
-                        <Zap className="w-4 h-4" />
+                        <Zap className="w-3 h-3 md:w-4 md:h-4" />
                       </button>
                     </td>
                   </tr>
@@ -590,45 +590,45 @@ const VeKittenCalculator = () => {
         </div>
 
         {/* Strategy Cards - All in one row */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-white/20">
+            <h3 className="text-base md:text-lg font-semibold text-white mb-3 flex items-center gap-2">
               🎯 <span>Concentration</span>
             </h3>
-            <div className="space-y-1 text-sm text-green-200">
+            <div className="space-y-1 text-xs md:text-sm text-green-200">
               <p><strong>Strategy:</strong> All votes → 1 pool</p>
               <p><strong>Best Single:</strong> Max dominance</p>
               <p><strong>Risk:</strong> Vulnerable to competition</p>
             </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-white/20">
+            <h3 className="text-base md:text-lg font-semibold text-white mb-3 flex items-center gap-2">
               ⚖️ <span>Diversification</span>
             </h3>
-            <div className="space-y-1 text-sm text-green-200">
+            <div className="space-y-1 text-xs md:text-sm text-green-200">
               <p><strong>Strategy:</strong> Split across top pools</p>
               <p><strong>Benefit:</strong> Lower risk</p>
               <p><strong>Trade-off:</strong> Lower max returns</p>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-lg rounded-xl p-6 border border-yellow-500/30">
-            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+          <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-yellow-500/30">
+            <h3 className="text-base md:text-lg font-semibold text-white mb-3 flex items-center gap-2">
               🚀 <span>OPTIMIZED</span>
             </h3>
-            <div className="space-y-1 text-sm text-yellow-200">
+            <div className="space-y-1 text-xs md:text-sm text-yellow-200">
               <p><strong>Algorithm:</strong> Marginal return maximization</p>
               <p><strong>Method:</strong> Allocates votes where each additional vote provides highest return</p>
               <p><strong>Result:</strong> Mathematically optimal allocation</p>
             </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
-            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-white/20">
+            <h3 className="text-base md:text-lg font-semibold text-white mb-3 flex items-center gap-2">
               📊 <span>Current Status</span>
             </h3>
-            <div className="space-y-1 text-sm text-green-200">
+            <div className="space-y-1 text-xs md:text-sm text-green-200">
               <p><strong>Allocated:</strong> {allocatedVotes.toLocaleString()} votes</p>
               <p><strong>Remaining:</strong> {remainingVotes.toLocaleString()} votes</p>
               <p><strong>Weekly Total:</strong> ${totalIncentives.toFixed(2)}</p>
@@ -637,8 +637,8 @@ const VeKittenCalculator = () => {
         </div>
 
         {/* Live Data Notice */}
-        <div className="mt-6 bg-blue-500/20 backdrop-blur-lg rounded-xl p-4 border border-blue-500/30">
-          <p className="text-sm text-blue-200 text-center">
+        <div className="mt-6 bg-blue-500/20 backdrop-blur-lg rounded-xl p-3 md:p-4 border border-blue-500/30">
+          <p className="text-xs md:text-sm text-blue-200 text-center">
             <strong>📊 Smart Allocation:</strong> Use 🚀 OPTIMIZE for mathematically optimal vote distribution across all {pools.length} pools that maximizes returns. 
             The algorithm calculates marginal returns and allocates each vote where it provides the highest additional reward. 
             Compare with manual strategies to see the difference!
