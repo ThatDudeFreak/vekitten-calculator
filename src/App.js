@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Calculator, TrendingUp, RefreshCw, ExternalLink, Zap, AlertTriangle } from 'lucide-react';
+import { Calculator, TrendingUp, RefreshCw, ExternalLink, Zap, AlertTriangle, Lock, Unlock } from 'lucide-react';
 
 const VeKittenCalculator = () => {
   const [mySize, setMySize] = useState('950000');
   const [allocations, setAllocations] = useState({});
+  const [lockedAllocations, setLockedAllocations] = useState({}); // Track which pools are locked
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const lastDataUpdate = 'Jun 29, 2025 7:35 PM EST'; // Static date - update manually
+  const lastDataUpdate = 'Jun 29, 2025 4:00 PM EST'; // Static date - update manually
 
   // Real pool data from KittenSwap voting interface - UPDATED
   const [pools, setPools] = useState([
@@ -297,8 +298,29 @@ const VeKittenCalculator = () => {
     setAllocations({ [poolId]: totalVotes });
   };
 
+  const toggleLock = (poolId) => {
+    const currentAllocation = parseFloat(allocations[poolId]) || 0;
+    if (currentAllocation === 0) return; // Can't lock empty allocation
+    
+    setLockedAllocations(prev => ({
+      ...prev,
+      [poolId]: !prev[poolId]
+    }));
+  };
+
   const clearAllocations = () => {
     setAllocations({});
+    setLockedAllocations({}); // Clear locks when clearing all
+  };
+
+  const clearUnlockedAllocations = () => {
+    const newAllocations = {};
+    Object.keys(allocations).forEach(poolId => {
+      if (lockedAllocations[poolId]) {
+        newAllocations[poolId] = allocations[poolId];
+      }
+    });
+    setAllocations(newAllocations);
   };
 
   const allocateTopThree = () => {
@@ -318,21 +340,31 @@ const VeKittenCalculator = () => {
   const optimizeAllocation = () => {
     if (totalVotes <= 0) return;
 
-    // Greedy optimization algorithm
-    // Allocates votes to maximize total return by always choosing pool with highest marginal return
-    
+    // Start with current locked allocations
     const allocation = {};
-    pools.forEach(pool => allocation[pool.id] = 0);
+    pools.forEach(pool => {
+      allocation[pool.id] = lockedAllocations[pool.id] ? (parseFloat(allocations[pool.id]) || 0) : 0;
+    });
     
-    const batchSize = Math.max(1, Math.floor(totalVotes / 1000)); // Optimize in batches for performance
-    let remainingVotes = totalVotes;
+    // Calculate remaining votes after accounting for locked allocations
+    const lockedVotes = Object.keys(lockedAllocations).reduce((sum, poolId) => {
+      return sum + (lockedAllocations[poolId] ? (parseFloat(allocations[poolId]) || 0) : 0);
+    }, 0);
+    
+    let remainingVotes = totalVotes - lockedVotes;
+    if (remainingVotes <= 0) return; // No votes left to optimize
+
+    // Get pools that are not locked for optimization
+    const optimizablePools = pools.filter(pool => !lockedAllocations[pool.id]);
+    
+    const batchSize = Math.max(1, Math.floor(remainingVotes / 1000)); // Optimize in batches for performance
     
     while (remainingVotes > 0) {
       let bestPool = null;
       let bestMarginalReturn = 0;
       
-      // Calculate marginal return for each pool
-      pools.forEach(pool => {
+      // Calculate marginal return for each unlocked pool
+      optimizablePools.forEach(pool => {
         const currentVotes = allocation[pool.id];
         const currentPoolSize = pool.poolSize + currentVotes;
         const votesToAdd = Math.min(batchSize, remainingVotes);
@@ -357,11 +389,10 @@ const VeKittenCalculator = () => {
       }
     }
     
-    // Clean up any rounding errors
+    // Clean up any rounding errors by adding to best unlocked pool
     const totalAllocated = Object.values(allocation).reduce((sum, val) => sum + val, 0);
-    if (totalAllocated !== totalVotes) {
-      // Add remaining votes to the pool with highest efficiency
-      const bestPool = pools.reduce((best, pool) => 
+    if (totalAllocated < totalVotes && optimizablePools.length > 0) {
+      const bestPool = optimizablePools.reduce((best, pool) => 
         (pool.incentives / pool.poolSize) > (best.incentives / best.poolSize) ? pool : best
       );
       allocation[bestPool.id] += totalVotes - totalAllocated;
@@ -400,7 +431,30 @@ const VeKittenCalculator = () => {
             <Calculator className="w-6 h-6 md:w-8 md:h-8 text-green-400" />
             <h1 className="text-2xl md:text-4xl font-bold text-white text-center">veKITTEN Vote Allocation Calculator</h1>
           </div>
-          <p className="text-green-200 text-base md:text-lg px-4">Allocate your votes across pools to maximize incentives</p>
+          <p className="text-green-200 text-base md:text-lg px-4 mb-4">Allocate your votes across pools to maximize incentives</p>
+          
+          {/* Buy veKITTEN Button */}
+          <div className="flex justify-center mb-4">
+            <a 
+              href="https://www.hyperwarp.fi/mx/kitten" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 backdrop-blur-lg border border-green-500/40 text-green-300 hover:text-green-200 px-4 md:px-6 py-3 rounded-xl transition-all duration-200 group"
+            >
+              <svg className="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Warp Logo SVG */}
+                <circle cx="50" cy="50" r="48" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="2" strokeOpacity="0.7"/>
+                <circle cx="50" cy="50" r="22" fill="none" stroke="currentColor" strokeWidth="2" strokeOpacity="0.5"/>
+                <circle cx="50" cy="50" r="10" fill="currentColor" fillOpacity="0.8"/>
+              </svg>
+              <div className="flex flex-col items-start">
+                <span className="font-semibold text-sm md:text-base">Buy more veKITTEN here</span>
+                <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">Hyperwarp Exchange</span>
+              </div>
+              <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+            </a>
+          </div>
         </div>
 
         {/* Stats Section */}
@@ -477,6 +531,12 @@ const VeKittenCalculator = () => {
                   Clear All
                 </button>
                 <button
+                  onClick={clearUnlockedAllocations}
+                  className="bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 px-3 md:px-4 py-2 rounded-lg transition-colors text-sm md:text-base"
+                >
+                  Clear Unlocked
+                </button>
+                <button
                   onClick={allocateTopThree}
                   className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 px-3 md:px-4 py-2 rounded-lg transition-colors text-sm md:text-base"
                 >
@@ -523,12 +583,13 @@ const VeKittenCalculator = () => {
         {/* Pool Table */}
         <div className="bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[800px]">
+            <table className="w-full min-w-[900px]">
               <thead className="bg-white/5">
                 <tr className="border-b border-white/20">
                   <th className="text-left py-3 md:py-4 px-3 md:px-6 text-green-400 font-semibold text-sm md:text-base">Pool</th>
                   <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">Total Votes</th>
                   <th className="text-center py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">My Votes</th>
+                  <th className="text-center py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">Lock</th>
                   <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">New Total</th>
                   <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">% Votes</th>
                   <th className="text-right py-3 md:py-4 px-2 md:px-4 text-green-400 font-semibold text-sm md:text-base">Incentives</th>
@@ -540,11 +601,14 @@ const VeKittenCalculator = () => {
                 {calculatedPools
                   .sort((a, b) => (b.incentives / (b.poolSize + totalVotes)) - (a.incentives / (a.poolSize + totalVotes)))
                   .map((pool, index) => (
-                  <tr key={pool.id} className={`border-b border-white/10 hover:bg-white/5 transition-colors ${pool.votesAllocated > 0 ? 'bg-green-500/10' : ''}`}>
+                  <tr key={pool.id} className={`border-b border-white/10 hover:bg-white/5 transition-colors ${pool.votesAllocated > 0 ? (lockedAllocations[pool.id] ? 'bg-blue-500/10 border-l-4 border-l-blue-500' : 'bg-green-500/10') : ''}`}>
                     <td className="py-3 md:py-4 px-3 md:px-6">
                       <div className="flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-2">
                         <span className="text-white font-semibold text-sm md:text-base">{pool.name}</span>
-                        {index < 3 && <span className="text-xs bg-yellow-500/30 text-yellow-200 px-2 py-1 rounded w-fit">TOP ROI</span>}
+                        <div className="flex items-center gap-2">
+                          {index < 3 && <span className="text-xs bg-yellow-500/30 text-yellow-200 px-2 py-1 rounded w-fit">TOP ROI</span>}
+                          {lockedAllocations[pool.id] && <span className="text-xs bg-blue-500/30 text-blue-200 px-2 py-1 rounded w-fit flex items-center gap-1"><Lock className="w-3 h-3" />LOCKED</span>}
+                        </div>
                       </div>
                     </td>
                     <td className="text-right py-3 md:py-4 px-2 md:px-4 text-white font-mono text-sm md:text-base">
@@ -555,11 +619,32 @@ const VeKittenCalculator = () => {
                         type="number"
                         value={allocations[pool.id] || ''}
                         onChange={(e) => handleAllocationChange(pool.id, e.target.value)}
-                        className="bg-white/10 border border-white/30 rounded px-1 md:px-2 py-1 text-white text-center w-16 md:w-24 text-sm md:text-base focus:outline-none focus:ring-1 focus:ring-green-500"
+                        disabled={lockedAllocations[pool.id]}
+                        className={`border rounded px-1 md:px-2 py-1 text-center w-16 md:w-24 text-sm md:text-base focus:outline-none focus:ring-1 focus:ring-green-500 ${
+                          lockedAllocations[pool.id] 
+                            ? 'bg-blue-500/10 border-blue-500/30 text-blue-300 cursor-not-allowed' 
+                            : 'bg-white/10 border-white/30 text-white'
+                        }`}
                         placeholder="0"
                         min="0"
                         max={remainingVotes + (parseFloat(allocations[pool.id]) || 0)}
                       />
+                    </td>
+                    <td className="text-center py-3 md:py-4 px-2 md:px-4">
+                      <button
+                        onClick={() => toggleLock(pool.id)}
+                        disabled={!allocations[pool.id] || parseFloat(allocations[pool.id]) === 0}
+                        className={`p-2 rounded transition-colors text-sm ${
+                          lockedAllocations[pool.id]
+                            ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-400'
+                            : allocations[pool.id] && parseFloat(allocations[pool.id]) > 0
+                            ? 'bg-gray-500/20 hover:bg-gray-500/30 text-gray-400'
+                            : 'bg-gray-500/10 text-gray-600 cursor-not-allowed'
+                        }`}
+                        title={lockedAllocations[pool.id] ? "Unlock allocation" : "Lock allocation"}
+                      >
+                        {lockedAllocations[pool.id] ? <Lock className="w-3 h-3 md:w-4 md:h-4" /> : <Unlock className="w-3 h-3 md:w-4 md:h-4" />}
+                      </button>
                     </td>
                     <td className="text-right py-3 md:py-4 px-2 md:px-4 text-white font-mono text-sm md:text-base">
                       {pool.newSize.toLocaleString('en-US', {minimumFractionDigits: 0})}
@@ -619,7 +704,7 @@ const VeKittenCalculator = () => {
             </h3>
             <div className="space-y-1 text-xs md:text-sm text-yellow-200">
               <p><strong>Algorithm:</strong> Marginal return maximization</p>
-              <p><strong>Method:</strong> Allocates votes where each additional vote provides highest return</p>
+              <p><strong>Lock Feature:</strong> Locks allocations, optimizes remaining votes</p>
               <p><strong>Result:</strong> Mathematically optimal allocation</p>
             </div>
           </div>
@@ -640,7 +725,7 @@ const VeKittenCalculator = () => {
         <div className="mt-6 bg-blue-500/20 backdrop-blur-lg rounded-xl p-3 md:p-4 border border-blue-500/30">
           <p className="text-xs md:text-sm text-blue-200 text-center">
             <strong>📊 Smart Allocation:</strong> Use 🚀 OPTIMIZE for mathematically optimal vote distribution across all {pools.length} pools that maximizes returns. 
-            The algorithm calculates marginal returns and allocates each vote where it provides the highest additional reward. 
+            🔒 <strong>Lock Feature:</strong> Lock specific allocations with the lock button, then optimize remaining votes around your locked positions!
             Compare with manual strategies to see the difference!
           </p>
         </div>
