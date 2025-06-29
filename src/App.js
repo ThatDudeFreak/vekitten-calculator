@@ -6,7 +6,7 @@ const VeKittenCalculator = () => {
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const lastDataUpdate = 'Jun 29, 2025 7:35 PM EST'; // Static date - update manually
+  const lastDataUpdate = 'Jun 29, 2025 4:00 PM EST'; // Static date - update manually
 
   // Real pool data from KittenSwap voting interface - UPDATED
   const [pools, setPools] = useState([
