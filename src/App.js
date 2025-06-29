@@ -460,7 +460,7 @@ const VeKittenCalculator = () => {
                 </svg>
               </div>
               <div className="flex flex-col items-start">
-                <span className="font-semibold text-sm md:text-base">Buy more veKITTEN here</span>
+                <span className="font-semibold text-sm md:text-base">Buy more veKITTEN</span>
                 <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">Hyperwarp Exchange</span>
               </div>
               <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
@@ -488,7 +488,7 @@ const VeKittenCalculator = () => {
                 </svg>
               </div>
               <div className="flex flex-col items-start">
-                <span className="font-semibold text-sm md:text-base">Vote with veKITTEN Here</span>
+                <span className="font-semibold text-sm md:text-base">Vote with veKITTEN</span>
                 <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">KittenSwap Voting</span>
               </div>
               <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
