@@ -6,7 +6,7 @@ const VeKittenCalculator = () => {
   const [allocations, setAllocations] = useState({});
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [lastDataUpdate] = useState(new Date('2025-06-29T19:35:00-05:00')); // Last manual data update from user (EST)
+  const lastDataUpdate = 'Jun 29, 2025 7:35 PM EST'; // Static date - update manually
 
   // Real pool data from KittenSwap voting interface - UPDATED
   const [pools, setPools] = useState([
@@ -431,67 +431,72 @@ const VeKittenCalculator = () => {
           </div>
         </div>
 
-        {/* Estimation Warning */}
-        <div className="bg-yellow-500/20 backdrop-blur-lg rounded-xl p-4 border border-yellow-500/30 mb-6">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-            <div>
-              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Estimation Warning</h3>
-              <p className="text-yellow-200 text-sm">
-                ⚠️ <strong>Estimates Only:</strong> These calculations are based on current data and can change significantly until the end of the epoch as more votes are cast.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20 mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-4">
-                <label className="text-white font-semibold text-lg">Total veKITTEN:</label>
-                <input
-                  type="number"
-                  value={mySize}
-                  onChange={(e) => setMySize(e.target.value)}
-                  className="bg-white/10 border border-white/30 rounded-lg px-4 py-2 text-white text-xl font-bold w-48 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="950000"
-                />
-              </div>
-              <div className="text-white">
-                <div className="text-sm text-green-300">Allocated: {allocatedVotes.toLocaleString()}</div>
-                <div className={`text-sm font-bold ${remainingVotes < 0 ? 'text-red-400' : 'text-green-400'}`}>
-                  Remaining: {remainingVotes.toLocaleString()}
+        {/* Warning and Controls Combined Section */}
+        <div className="bg-green-800/30 backdrop-blur-lg rounded-xl border border-green-600/40 mb-8">
+          {/* Estimation Warning */}
+          <div className="p-4 border-b border-green-600/30">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0" />
+              <div>
+                <h3 className="text-lg font-semibold text-yellow-400 mb-1">Estimation Warning</h3>
+                <div className="border border-red-500/50 rounded p-2 bg-red-500/10">
+                  <p className="text-yellow-200 text-sm">
+                    ⚠️ <strong>Estimates Only:</strong> These calculations are based on current data and can change significantly until the end of the epoch as more votes are cast.
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={clearAllocations}
-                className="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-colors"
-              >
-                Clear All
-              </button>
-              <button
-                onClick={allocateTopThree}
-                className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 px-4 py-2 rounded-lg transition-colors"
-              >
-                Split Top 3
-              </button>
-              <button
-                onClick={optimizeAllocation}
-                className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 hover:from-yellow-500/30 hover:to-orange-500/30 text-yellow-400 px-4 py-2 rounded-lg transition-colors font-semibold border border-yellow-500/30"
-              >
-                🚀 OPTIMIZE
-              </button>
-              <button
-                onClick={simulateDataRefresh}
-                disabled={loading}
-                className="flex items-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                Refresh
-              </button>
+          </div>
+          
+          {/* Controls */}
+          <div className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4">
+                  <label className="text-white font-semibold text-lg">Total veKITTEN:</label>
+                  <input
+                    type="number"
+                    value={mySize}
+                    onChange={(e) => setMySize(e.target.value)}
+                    className="bg-green-700/30 border border-green-500/50 rounded-lg px-4 py-2 text-white text-xl font-bold w-48 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    placeholder="950000"
+                  />
+                </div>
+                <div className="text-white">
+                  <div className="text-sm text-green-300">Allocated: {allocatedVotes.toLocaleString()}</div>
+                  <div className={`text-sm font-bold ${remainingVotes < 0 ? 'text-red-400' : 'text-green-400'}`}>
+                    Remaining: {remainingVotes.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={clearAllocations}
+                  className="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-colors"
+                >
+                  Clear All
+                </button>
+                <button
+                  onClick={allocateTopThree}
+                  className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 px-4 py-2 rounded-lg transition-colors"
+                >
+                  Split Top 3
+                </button>
+                <button
+                  onClick={optimizeAllocation}
+                  className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 hover:from-yellow-500/30 hover:to-orange-500/30 text-yellow-400 px-4 py-2 rounded-lg transition-colors font-semibold border border-yellow-500/30"
+                >
+                  🚀 OPTIMIZE
+                </button>
+                <button
+                  onClick={simulateDataRefresh}
+                  disabled={loading}
+                  className="flex items-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                  Refresh
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -504,13 +509,7 @@ const VeKittenCalculator = () => {
                 <h2 className="text-2xl font-bold text-white mb-2">Total Weekly Incentives</h2>
                 <div className="text-4xl font-bold text-green-400">${totalIncentives.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                 <div className="text-sm text-green-300 mt-2">
-                  Data updated: {lastDataUpdate.toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
+                  Data updated: {lastDataUpdate}
                 </div>
               </div>
               <div className="text-right">
