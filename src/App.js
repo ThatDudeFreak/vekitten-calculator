@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calculator, TrendingUp, RefreshCw, ExternalLink, Zap } from 'lucide-react';
+import { Calculator, TrendingUp, RefreshCw, ExternalLink, Zap, AlertTriangle } from 'lucide-react';
 
 const VeKittenCalculator = () => {
   const [mySize, setMySize] = useState('950000');
@@ -401,6 +401,47 @@ const VeKittenCalculator = () => {
             <h1 className="text-4xl font-bold text-white">veKITTEN Vote Allocation Calculator</h1>
           </div>
           <p className="text-green-200 text-lg">Allocate your votes across pools to maximize incentives</p>
+        </div>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="bg-blue-500/20 backdrop-blur-lg rounded-xl p-4 border border-blue-500/30">
+            <div className="text-center">
+              <div className="text-sm text-blue-300 font-semibold mb-1">% of Votes Cast</div>
+              <div className="text-3xl font-bold text-blue-400">14.31%</div>
+            </div>
+          </div>
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20">
+            <div className="text-center">
+              <div className="text-sm text-green-300 font-semibold mb-1">Total Pools</div>
+              <div className="text-3xl font-bold text-green-400">{pools.length}</div>
+            </div>
+          </div>
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20">
+            <div className="text-center">
+              <div className="text-sm text-purple-300 font-semibold mb-1">Active Pools</div>
+              <div className="text-3xl font-bold text-purple-400">{pools.filter(p => p.incentives > 0).length}</div>
+            </div>
+          </div>
+          <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20">
+            <div className="text-center">
+              <div className="text-sm text-orange-300 font-semibold mb-1">My Allocations</div>
+              <div className="text-3xl font-bold text-orange-400">{Object.values(allocations).filter(v => v > 0).length}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Estimation Warning */}
+        <div className="bg-yellow-500/20 backdrop-blur-lg rounded-xl p-4 border border-yellow-500/30 mb-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Estimation Warning</h3>
+              <p className="text-yellow-200 text-sm">
+                ⚠️ <strong>Estimates Only:</strong> These calculations are based on current data and can change significantly until the end of the epoch as more votes are cast.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Controls */}
