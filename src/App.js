@@ -427,7 +427,7 @@ const VeKittenCalculator = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 relative">
-          {/* Buy Me a Coffee Button - Top Right */}
+          {/* Buy Me Some $HYPE - Top Right */}
           <div className="absolute top-0 right-0 hidden md:block">
             <button
               onClick={() => {
@@ -438,7 +438,7 @@ const VeKittenCalculator = () => {
               title="Copy wallet address: 0x5ea218795beDB8393298b75A3aE4e9301a0B6153"
             >
               <span>☕</span>
-              <span className="font-medium">Buy me a coffee</span>
+              <span className="font-medium">Buy me some $HYPE</span>
             </button>
           </div>
 
@@ -448,7 +448,7 @@ const VeKittenCalculator = () => {
           </div>
           <p className="text-green-200 text-base md:text-lg px-4 mb-4">Allocate your votes across pools to maximize incentives</p>
           
-          {/* Mobile Buy Me a Coffee Button */}
+          {/* Mobile Buy Me Some $HYPE Button */}
           <div className="flex justify-center mb-4 md:hidden">
             <button
               onClick={() => {
