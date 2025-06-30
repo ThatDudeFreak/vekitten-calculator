@@ -426,12 +426,42 @@ const VeKittenCalculator = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-teal-900 to-blue-900 p-3 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 relative">
+          {/* Buy Me a Coffee Button - Top Right */}
+          <div className="absolute top-0 right-0 hidden md:block">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('0x5ea218795beDB8393298b75A3aE4e9301a0B6153');
+                alert('Wallet address copied to clipboard!');
+              }}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 backdrop-blur-lg border border-amber-500/40 text-amber-300 hover:text-amber-200 px-3 py-2 rounded-lg transition-all duration-200 text-sm group"
+              title="Copy wallet address: 0x5ea218795beDB8393298b75A3aE4e9301a0B6153"
+            >
+              <span>☕</span>
+              <span className="font-medium">Buy me a coffee</span>
+            </button>
+          </div>
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3 mb-4">
             <Calculator className="w-6 h-6 md:w-8 md:h-8 text-green-400" />
             <h1 className="text-2xl md:text-4xl font-bold text-white text-center">veKITTEN Vote Allocation Calculator</h1>
           </div>
           <p className="text-green-200 text-base md:text-lg px-4 mb-4">Allocate your votes across pools to maximize incentives</p>
+          
+          {/* Mobile Buy Me a Coffee Button */}
+          <div className="flex justify-center mb-4 md:hidden">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('0x5ea218795beDB8393298b75A3aE4e9301a0B6153');
+                alert('Wallet address copied to clipboard!');
+              }}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 backdrop-blur-lg border border-amber-500/40 text-amber-300 hover:text-amber-200 px-3 py-2 rounded-lg transition-all duration-200 text-sm"
+              title="Copy wallet address"
+            >
+              <span>☕</span>
+              <span className="font-medium">Buy me a coffee</span>
+            </button>
+          </div>
           
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mb-4">
@@ -601,18 +631,59 @@ const VeKittenCalculator = () => {
         {/* Summary */}
         {totalIncentives > 0 && (
           <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-green-500/30 mb-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Left side - Total incentives */}
+              <div className="flex-1">
                 <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Total Weekly Incentives</h2>
                 <div className="text-2xl md:text-4xl font-bold text-green-400">${totalIncentives.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                 <div className="text-xs md:text-sm text-green-300 mt-2">
                   Data updated: {lastDataUpdate}
                 </div>
+                <div className="mt-4 text-left">
+                  <div className="text-base md:text-lg text-green-300">Monthly: ${(totalIncentives * 4.33).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+                  <div className="text-base md:text-lg text-green-300">Yearly: ${(totalIncentives * 52).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+                </div>
               </div>
-              <div className="text-left md:text-right">
-                <div className="text-base md:text-lg text-green-300">Monthly: ${(totalIncentives * 4.33).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
-                <div className="text-base md:text-lg text-green-300">Yearly: ${(totalIncentives * 52).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
-              </div>
+              
+              {/* Right side - Allocation breakdown */}
+              {allocatedVotes > 0 && (
+                <div className="flex-1 lg:border-l lg:border-green-500/30 lg:pl-6">
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-3">Your Allocation Breakdown</h3>
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {Object.entries(allocations)
+                      .filter(([poolId, votes]) => parseFloat(votes) > 0)
+                      .sort(([, a], [, b]) => parseFloat(b) - parseFloat(a))
+                      .map(([poolId, votes]) => {
+                        const pool = pools.find(p => p.id === poolId);
+                        const percentage = totalVotes > 0 ? (parseFloat(votes) / totalVotes * 100) : 0;
+                        const votesNum = parseFloat(votes);
+                        return (
+                          <div key={poolId} className="flex items-center justify-between bg-white/5 rounded-lg p-3 border border-white/10">
+                            <div className="flex items-center gap-2">
+                              <span className="text-white font-medium text-sm">{pool?.name}</span>
+                              {lockedAllocations[poolId] && (
+                                <span className="text-xs bg-blue-500/30 text-blue-200 px-2 py-1 rounded flex items-center gap-1">
+                                  <Lock className="w-3 h-3" />LOCKED
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <div className="text-green-400 font-bold text-sm">{votesNum.toLocaleString()}</div>
+                              <div className="text-green-300 text-xs">{percentage.toFixed(1)}%</div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    }
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-green-500/30">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-300">Total Allocated:</span>
+                      <span className="text-green-400 font-bold">{allocatedVotes.toLocaleString()} (100%)</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
