@@ -459,7 +459,7 @@ const VeKittenCalculator = () => {
               title="Copy wallet address"
             >
               <span>☕</span>
-              <span className="font-medium">Buy me a coffee</span>
+              <span className="font-medium">Buy me some $HYPE</span>
             </button>
           </div>
           
