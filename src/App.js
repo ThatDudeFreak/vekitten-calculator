@@ -7,254 +7,254 @@ const VeKittenCalculator = () => {
   const [lockedAllocations, setLockedAllocations] = useState({}); // Track which pools are locked
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const lastDataUpdate = 'Jun 30, 2025 7:34 AM EST'; // Static date - update manually
+  const lastDataUpdate = 'Jun 30, 2025 5:54 PM EST'; // Static date - update manually
 
-  // Real pool data from KittenSwap voting interface - UPDATED
+  // Updated pool data from latest KittenSwap voting interface data
   const [pools, setPools] = useState([
     {
       id: 'hype-usdt0',
       name: 'HYPE/USD₮0',
-      poolSize: 43310000,
-      incentives: 495811.97
+      poolSize: 47520000, // $2.50M worth in votes 
+      incentives: 506677.91
     },
     {
       id: 'hype-ubtc',
       name: 'HYPE/UBTC',
-      poolSize: 12250000,
-      incentives: 149258.88
+      poolSize: 14870000, // $2.25M worth in votes
+      incentives: 152377.75
     },
     {
       id: 'hype-usdhl',
       name: 'HYPE/USDHL',
-      poolSize: 13100000,
-      incentives: 91648.06
+      poolSize: 13710000, // $1.94M worth in votes
+      incentives: 94449.24
     },
     {
       id: 'hype-ueth',
       name: 'HYPE/UETH',
-      poolSize: 5430000,
-      incentives: 89447.36
+      poolSize: 6140000, // $1.19M worth in votes
+      incentives: 92118.04
     },
     {
       id: 'hype-purr',
       name: 'HYPE/PURR',
-      poolSize: 3180000,
-      incentives: 63901.43
+      poolSize: 3490000, // $961.73K worth in votes
+      incentives: 65257.42
     },
     {
       id: 'feusd-hype',
       name: 'feUSD/HYPE',
-      poolSize: 2370000,
-      incentives: 60832.00
+      poolSize: 2920000, // $78.07K worth in votes
+      incentives: 62048.12
     },
     {
       id: 'hype-usdxl',
       name: 'HYPE/USDXL',
-      poolSize: 2320000,
-      incentives: 60231.21
+      poolSize: 2910000, // $561.13K worth in votes
+      incentives: 61618.89
     },
     {
       id: 'hype-usde',
       name: 'HYPE/USDe',
-      poolSize: 1120000,
-      incentives: 44874.06
-    },
-    {
-      id: 'liqd-hype',
-      name: 'LIQD/HYPE',
-      poolSize: 1710000,
-      incentives: 39042.96
-    },
-    {
-      id: 'usol-hype',
-      name: 'USOL/HYPE',
-      poolSize: 612870,
-      incentives: 30741.40
-    },
-    {
-      id: 'hype-kei',
-      name: 'HYPE/KEI',
-      poolSize: 508380,
-      incentives: 28719.43
-    },
-    {
-      id: 'lhype-usdxl',
-      name: 'LHYPE/USDXL',
-      poolSize: 457820,
-      incentives: 25095.37
-    },
-    {
-      id: 'usdt0-ueth',
-      name: 'USD₮0/UETH',
-      poolSize: 570590,
-      incentives: 21999.32
-    },
-    {
-      id: 'ubtc-ueth',
-      name: 'UBTC/UETH',
-      poolSize: 513000,
-      incentives: 18754.40
-    },
-    {
-      id: 'ubtc-usdt0',
-      name: 'UBTC/USD₮0',
-      poolSize: 1450000,
-      incentives: 15704.92
-    },
-    {
-      id: 'hype-lhype',
-      name: 'HYPE/LHYPE',
-      poolSize: 3000000,
-      incentives: 10008.08
-    },
-    {
-      id: 'ufart-hype',
-      name: 'UFART/HYPE',
-      poolSize: 365150,
-      incentives: 9492.49
-    },
-    {
-      id: 'hype-hfun',
-      name: 'HYPE/HFUN',
-      poolSize: 222640,
-      incentives: 9477.87
-    },
-    {
-      id: 'usde-usdt0',
-      name: 'USDe/USD₮0',
-      poolSize: 317410,
-      incentives: 7817.29
-    },
-    {
-      id: 'usdhl-usdt0',
-      name: 'USDHL/USD₮0',
-      poolSize: 1250000,
-      incentives: 7366.56
-    },
-    {
-      id: 'buddy-hype',
-      name: 'BUDDY/HYPE',
-      poolSize: 189290,
-      incentives: 6885.53
-    },
-    {
-      id: 'usde-ueth',
-      name: 'USDe/UETH',
-      poolSize: 226850,
-      incentives: 6625.50
-    },
-    {
-      id: 'hype-wsthype',
-      name: 'HYPE/wstHYPE',
-      poolSize: 176490,
-      incentives: 6168.89
-    },
-    {
-      id: 'usde-ubtc',
-      name: 'USDe/UBTC',
-      poolSize: 619170,
-      incentives: 5808.34
-    },
-    {
-      id: 'hype-xaut0',
-      name: 'HYPE/XAUt0',
-      poolSize: 261640,
-      incentives: 5422.48
-    },
-    {
-      id: 'hype-kitten',
-      name: 'HYPE/KITTEN',
-      poolSize: 2610000,
-      incentives: 5812.04
-    },
-    {
-      id: 'hype-paws',
-      name: 'HYPE/PAWS',
-      poolSize: 6950000,
-      incentives: 5316.49
-    },
-    {
-      id: 'hype-mhype',
-      name: 'HYPE/mHYPE',
-      poolSize: 601840,
-      incentives: 4930.55
-    },
-    {
-      id: 'feusd-usdt0',
-      name: 'feUSD/USD₮0',
-      poolSize: 334650,
-      incentives: 4048.87
-    },
-    {
-      id: 'usdt0-usdxl',
-      name: 'USD₮0/USDXL',
-      poolSize: 198820,
-      incentives: 4017.16
-    },
-    {
-      id: 'kei-usdt0',
-      name: 'KEI/USD₮0',
-      poolSize: 154280,
-      incentives: 2607.22
-    },
-    {
-      id: 'feusd-usdxl',
-      name: 'feUSD/USDXL',
-      poolSize: 51360,
-      incentives: 1764.73
+      poolSize: 2380000, // $151.42K worth in votes
+      incentives: 45710.04
     },
     {
       id: 'jeff-hype',
       name: 'JEFF/HYPE',
-      poolSize: 36290,
-      incentives: 1686.21
+      poolSize: 2030000, // $311.49K worth in votes
+      incentives: 40879.47
+    },
+    {
+      id: 'liqd-hype',
+      name: 'LIQD/HYPE',
+      poolSize: 1880000, // $217.21K worth in votes
+      incentives: 38229.12
+    },
+    {
+      id: 'usol-hype',
+      name: 'USOL/HYPE',
+      poolSize: 1880000, // $220.30K worth in votes
+      incentives: 32038.30
+    },
+    {
+      id: 'hype-kei',
+      name: 'HYPE/KEI',
+      poolSize: 2260000, // $45.76K worth in votes
+      incentives: 29190.10
+    },
+    {
+      id: 'lhype-usdxl',
+      name: 'LHYPE/USDXL',
+      poolSize: 1640000, // $143.57K worth in votes
+      incentives: 25273.02
+    },
+    {
+      id: 'usdt0-ueth',
+      name: 'USD₮0/UETH',
+      poolSize: 884470, // $68.01K worth in votes
+      incentives: 22129.58
+    },
+    {
+      id: 'ubtc-ueth',
+      name: 'UBTC/UETH',
+      poolSize: 1520000, // $251.19K worth in votes
+      incentives: 18803.96
+    },
+    {
+      id: 'ubtc-usdt0',
+      name: 'UBTC/USD₮0',
+      poolSize: 1470000, // $491.09K worth in votes
+      incentives: 15691.70
+    },
+    {
+      id: 'hype-kitten',
+      name: 'HYPE/KITTEN',
+      poolSize: 6150000, // $2.61M worth in votes
+      incentives: 13904.77
+    },
+    {
+      id: 'hype-lhype',
+      name: 'HYPE/LHYPE',
+      poolSize: 3770000, // $14.43M worth in votes
+      incentives: 10255.87
+    },
+    {
+      id: 'ufart-hype',
+      name: 'UFART/HYPE',
+      poolSize: 390500, // $173.94K worth in votes
+      incentives: 9798.44
+    },
+    {
+      id: 'hype-hfun',
+      name: 'HYPE/HFUN',
+      poolSize: 353560, // $511.58K worth in votes
+      incentives: 9790.45
+    },
+    {
+      id: 'usde-usdt0',
+      name: 'USDe/USD₮0',
+      poolSize: 336780, // $384.73K worth in votes
+      incentives: 7814.34
+    },
+    {
+      id: 'usdhl-usdt0',
+      name: 'USDHL/USD₮0',
+      poolSize: 1470000, // $1.89M worth in votes
+      incentives: 7393.54
+    },
+    {
+      id: 'buddy-hype',
+      name: 'BUDDY/HYPE',
+      poolSize: 314600, // $41.98K worth in votes
+      incentives: 6876.78
+    },
+    {
+      id: 'usde-ueth',
+      name: 'USDe/UETH',
+      poolSize: 236750, // $10.31K worth in votes
+      incentives: 6648.36
+    },
+    {
+      id: 'hype-wsthype',
+      name: 'HYPE/wstHYPE',
+      poolSize: 870640, // $751.48K worth in votes
+      incentives: 6391.69
+    },
+    {
+      id: 'usde-ubtc',
+      name: 'USDe/UBTC',
+      poolSize: 638540, // $8.51K worth in votes
+      incentives: 5770.16
+    },
+    {
+      id: 'hype-xaut0',
+      name: 'HYPE/XAUt0',
+      poolSize: 261640, // $28.72K worth in votes
+      incentives: 5529.08
+    },
+    {
+      id: 'hype-mhype',
+      name: 'HYPE/mHYPE',
+      poolSize: 1500000, // $4.02M worth in votes
+      incentives: 5069.23
+    },
+    {
+      id: 'hype-paws',
+      name: 'HYPE/PAWS',
+      poolSize: 9430000, // $133.31K worth in votes
+      incentives: 5018.27
+    },
+    {
+      id: 'feusd-usdt0',
+      name: 'feUSD/USD₮0',
+      poolSize: 353090, // $307.45K worth in votes
+      incentives: 4091.83
+    },
+    {
+      id: 'usdt0-usdxl',
+      name: 'USD₮0/USDXL',
+      poolSize: 214620, // $1.57M worth in votes
+      incentives: 4054.78
+    },
+    {
+      id: 'kei-usdt0',
+      name: 'KEI/USD₮0',
+      poolSize: 160270, // $91.23K worth in votes
+      incentives: 2591.20
+    },
+    {
+      id: 'feusd-usdxl',
+      name: 'feUSD/USDXL',
+      poolSize: 69540, // $20.99K worth in votes
+      incentives: 1761.64
     },
     {
       id: 'feusd-usde',
       name: 'feUSD/USDe',
-      poolSize: 346910,
-      incentives: 1604.75
+      poolSize: 346910, // $5.17K worth in votes
+      incentives: 1600.16
     },
     {
       id: 'kei-usdxl',
       name: 'KEI/USDXL',
-      poolSize: 36520,
-      incentives: 1607.44
+      poolSize: 61030, // $17.87K worth in votes
+      incentives: 1591.16
     },
     {
       id: 'loop-lhype',
       name: 'LOOP/LHYPE',
-      poolSize: 93590,
-      incentives: 1171.39
+      poolSize: 236590, // $370.76K worth in votes
+      incentives: 1175.51
     },
     {
       id: 'usr-usdt0',
       name: 'USR/USD₮0',
-      poolSize: 9970,
-      incentives: 261.74
+      poolSize: 10430, // $5.90K worth in votes
+      incentives: 261.63
     },
     {
       id: 'dndx-hype',
       name: 'DNDX/HYPE',
-      poolSize: 9560,
-      incentives: 139.24
+      poolSize: 9560, // $0.00 worth in votes
+      incentives: 142.57
     },
     {
       id: 'whlp-usdhl',
       name: 'WHLP/USDHL',
-      poolSize: 1050000,
-      incentives: 9.45
+      poolSize: 1270000, // $478.63K worth in votes
+      incentives: 12.93
     },
     {
       id: 'usdt0-usdxl-std',
       name: 'USD₮0/USDXL (Std)',
-      poolSize: 0,
+      poolSize: 0, // $1.44K but 0 votes
       incentives: 0.00
     },
     {
       id: 'pip-hype',
       name: 'PiP/HYPE',
-      poolSize: 0,
+      poolSize: 0, // $19.28K but 0 votes
       incentives: 0.00
     }
   ]);
@@ -427,7 +427,7 @@ const VeKittenCalculator = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 relative">
-          {/* Buy Me Some $HYPE - Top Right */}
+          {/* Buy Me a Coffee Button - Top Right */}
           <div className="absolute top-0 right-0 hidden md:block">
             <button
               onClick={() => {
@@ -438,7 +438,7 @@ const VeKittenCalculator = () => {
               title="Copy wallet address: 0x5ea218795beDB8393298b75A3aE4e9301a0B6153"
             >
               <span>☕</span>
-              <span className="font-medium">Buy me some $HYPE</span>
+              <span className="font-medium">Buy me a coffee</span>
             </button>
           </div>
 
@@ -448,7 +448,7 @@ const VeKittenCalculator = () => {
           </div>
           <p className="text-green-200 text-base md:text-lg px-4 mb-4">Allocate your votes across pools to maximize incentives</p>
           
-          {/* Mobile Buy Me Some $HYPE Button */}
+          {/* Mobile Buy Me a Coffee Button */}
           <div className="flex justify-center mb-4 md:hidden">
             <button
               onClick={() => {
@@ -459,7 +459,7 @@ const VeKittenCalculator = () => {
               title="Copy wallet address"
             >
               <span>☕</span>
-              <span className="font-medium">Buy me some $HYPE</span>
+              <span className="font-medium">Buy me a coffee</span>
             </button>
           </div>
           
@@ -531,7 +531,7 @@ const VeKittenCalculator = () => {
           <div className="bg-blue-500/20 backdrop-blur-lg rounded-xl p-4 border border-blue-500/30">
             <div className="text-center">
               <div className="text-sm text-blue-300 font-semibold mb-1">% of Votes Cast</div>
-              <div className="text-3xl font-bold text-blue-400">15.63%</div>
+              <div className="text-3xl font-bold text-blue-400">17.6%</div>
             </div>
           </div>
           <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20">
