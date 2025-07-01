@@ -7,6 +7,7 @@ const VeKittenCalculator = () => {
   const [lockedAllocations, setLockedAllocations] = useState({}); // Track which pools are locked
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [showKittenswapPopup, setShowKittenswapPopup] = useState(true);
   const lastDataUpdate = 'Jun 30, 2025 5:54 PM EST'; // Static date - update manually
 
   // Updated pool data from latest KittenSwap voting interface data
@@ -425,6 +426,91 @@ const VeKittenCalculator = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-teal-900 to-blue-900 p-3 md:p-6">
       <div className="max-w-7xl mx-auto">
+        
+        {/* Kittenswap Integration Announcement Popup */}
+        {showKittenswapPopup && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-lg rounded-2xl border border-purple-500/40 max-w-2xl w-full p-6 md:p-8 relative">
+              <button
+                onClick={() => setShowKittenswapPopup(false)}
+                className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              
+              <div className="text-center">
+                <div className="mb-4">
+                  <div className="text-4xl md:text-6xl mb-4">🚀✨</div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    BIG NEWS!
+                  </h2>
+                  <div className="text-lg md:text-xl text-purple-200 mb-6">
+                    KittenSwap has integrated our optimizer directly into their platform!
+                  </div>
+                </div>
+                
+                <div className="bg-white/10 rounded-xl p-4 md:p-6 mb-6 border border-white/20">
+                  <h3 className="text-lg font-semibold text-white mb-3">✨ Now Available on KittenSwap:</h3>
+                  <div className="space-y-2 text-purple-200 text-sm md:text-base">
+                    <div className="flex items-center justify-center gap-2">
+                      <span>🎯</span>
+                      <span>Use the optimizer directly on their platform</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <span>🗳️</span>
+                      <span>Vote immediately after optimization</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <span>💰</span>
+                      <span>See real-time rewards as you allocate</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <span>⚡</span>
+                      <span>No need to switch between tools</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 p-3 bg-orange-500/20 rounded-lg border border-orange-500/30">
+                    <div className="text-orange-200 text-sm text-center">
+                      <strong>⚠️ Important:</strong> Pool data on this website will no longer be updated. 
+                      All live data and features have moved to KittenSwap.
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <a
+                    href="https://app.kittenswap.finance/vekitten"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 group text-lg"
+                  >
+                    <span>🚀 Try it on KittenSwap</span>
+                    <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  </a>
+                  <a
+                    href="https://x.com/ThatNFTGawd"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowKittenswapPopup(false)}
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/30 hover:to-cyan-500/30 text-blue-300 hover:text-blue-200 px-6 py-3 rounded-xl font-medium transition-all duration-200 border border-blue-500/40"
+                  >
+                    <span>🐦</span>
+                    <span>Follow me on X</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+                
+                <div className="mt-4 text-xs text-purple-300/80">
+                  This calculator will remain available as a reference tool
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="text-center mb-6 relative">
           {/* Buy Me a Coffee Button - Top Right */}
@@ -518,13 +604,37 @@ const VeKittenCalculator = () => {
                 </svg>
               </div>
               <div className="flex flex-col items-start">
-                <span className="font-semibold text-sm md:text-base">Vote with veKITTEN Here</span>
-                <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">KittenSwap Voting</span>
+                <span className="font-semibold text-sm md:text-base">Vote with Integrated Optimizer</span>
+                <span className="text-xs md:text-sm opacity-75 group-hover:opacity-100 transition-opacity">KittenSwap + Our Optimizer!</span>
               </div>
               <ExternalLink className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
             </a>
           </div>
         </div>
+
+        {/* KittenSwap Integration Banner - shown after popup is dismissed */}
+        {!showKittenswapPopup && (
+          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-lg rounded-xl p-4 border border-purple-500/30 mb-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-center md:text-left">
+                <div className="text-2xl">🚀</div>
+                <div>
+                  <div className="text-white font-semibold">New: Optimizer now integrated on KittenSwap!</div>
+                  <div className="text-purple-200 text-sm">Vote directly with optimized allocations and see real-time rewards</div>
+                </div>
+              </div>
+              <a
+                href="https://app.kittenswap.finance/vekitten"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 group flex-shrink-0"
+              >
+                <span>Try it now</span>
+                <ExternalLink className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              </a>
+            </div>
+          </div>
+        )}
 
         {/* Stats Section */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
